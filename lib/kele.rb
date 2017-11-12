@@ -63,4 +63,21 @@ class Kele
         }
         self.class.post(@uri + '/messages', options)
     end
+    
+    def create_submission(branch, commit, checkpoint, comment)
+        enrollment_id = @user_data["current_enrollment"]["enrollment_id"]
+        options = {
+            headers:{"authorization" => @auth_token},
+            
+            body: {
+                    "assignment_branch": branch,
+                    "assignment_commit_link": commit,
+                    "checkpoint_id": checkpoint,
+                    "comment": comment,
+                    "enrollment_id": enrollment_id
+                }
+        }
+
+        self.class.post(@uri + '/checkpoint_submissions', options)
+    end
 end
