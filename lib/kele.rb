@@ -50,7 +50,19 @@ class Kele
     end
     
     def create_message(subject, messagetext, threadtoken=nil)
-        options = {
+        if threadtoken == nil
+            options = {
+            headers:{"authorization" => @auth_token},
+            
+            body: {
+                    "sender": @email,
+                    "recipient_id": @mentor_id,
+                    "subject": subject,
+                    "stripped-text": messagetext
+                }
+            }
+        else
+                        options = {
             headers:{"authorization" => @auth_token},
             
             body: {
@@ -61,11 +73,12 @@ class Kele
                     "stripped-text": messagetext
                 }
         }
+        end
         self.class.post(@uri + '/messages', options)
     end
     
     def create_submission(branch, commit, checkpoint, comment)
-        enrollment_id = @user_data["current_enrollment"]["enrollment_id"]
+        enrollment_id = @user_data["current_enrollment"]["id"]
         options = {
             headers:{"authorization" => @auth_token},
             
